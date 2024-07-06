@@ -1,4 +1,4 @@
-export default function SignInLayout({
+export default function AppLayout({
     children,
   }: {
     children: React.ReactNode
