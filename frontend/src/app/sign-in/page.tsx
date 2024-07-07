@@ -6,8 +6,8 @@ import { Label } from "@/components/ui/label";
 
 export default function Page() {
   return (
-    <div className="flex w-full h-screen lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
-      <div className="flex items-center justify-center py-12">
+    <div className="flex w-full h-screen lg:grid lg:grid-cols-2 lg:min-h-[600px] xl:min-h-[800px]">
+      <div className="flex w-full items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="justify-center grid">
             <Image
@@ -58,7 +58,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="hidden bg-muted lg:block contrast-125 brightness-50">
+      <div className="hidden lg:block bg-muted contrast-125 brightness-50">
         <Image
           src="/backgroundimage.jpg"
           alt="Image"
