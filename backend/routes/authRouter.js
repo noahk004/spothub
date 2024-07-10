@@ -6,23 +6,31 @@ const { toHash } = require("../utils/session.js");
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  if (email && password) {
-    const users = req.db.collection("users");
-    const user = await users.findOne({ email: email, password: password });
-    if (user) {
-      req.session.user = {
-        isAuthenticated: true,
-        id: user._id.toString(),
-      };
-      console.log(`Successfully logged into ${user.email}`);
-      res.status(200).json({
-        user: req.session.user,
-      });
-    } else {
-      res.status(401).json({ isAuthenticated: false });
-    }
-  } else {
+
+  if (!(email && password)) {
     res.status(401).send("Missing email or password");
+    return;
+  }
+
+  const users = req.db.collection("users");
+  const user = await users.findOne({ email: email });
+
+  if (!user) {
+    res.status(401).json({ isAuthenticated: false });
+    return;
+  }
+  const hash = toHash(password, user.salt);
+  if (user.password === hash) {
+    req.session.user = {
+      isAuthenticated: true,
+      id: user._id.toString(),
+    };
+    console.log(`Successfully logged into ${user.email}`);
+    res.status(200).json({
+      user: req.session.user,
+    });
+  } else {
+    res.status(401).json({ isAuthenticated: false });
   }
 });
 
@@ -35,7 +43,7 @@ router.post("/logout", (req, res) => {
   });
 });
 
-router.post("/create-account", async (req, res) => {
+router.post("/register", async (req, res) => {
   const { email, username, password } = req.body;
   if (!(email && username && password)) {
     res.status(400).send("One of the fields is missing.");

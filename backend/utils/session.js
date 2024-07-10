@@ -30,7 +30,7 @@ const checkCredentials = (req, res, next) => {
 const toHash = (password, salt) => {
   const iterations = 10000;
   const hash = pbkdf2Sync(password, salt, iterations, 128, "sha512");
-  return hash;
+  return hash.toString();
 };
 
 module.exports = { sessionMiddleware, checkCredentials, toHash };
