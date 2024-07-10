@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const { randomBytes } = require("node:crypto");
 const session = require("express-session");
 const cors = require("cors");
 const path = require("path");
@@ -12,14 +13,16 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true
-}))
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
 
 app.use(
   session({
-    secret: "some key",
+    secret: randomBytes(32).toString('hex'),
     resave: false,
     saveUninitialized: false,
     cookie: {
