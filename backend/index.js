@@ -6,6 +6,7 @@ const cors = require("cors");
 const path = require("path");
 const https = require("https");
 const fs = require("fs");
+const MongoStore = require("connect-mongo");
 const authRouter = require("./routes/authRouter.js");
 const dataRouter = require("./routes/dataRouter.js");
 
@@ -22,13 +23,17 @@ app.use(
 
 app.use(
   session({
-    secret: randomBytes(32).toString('hex'),
+    secret: randomBytes(32).toString("hex"),
     resave: false,
     saveUninitialized: false,
     cookie: {
       secure: true,
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     },
+    store: MongoStore.create({
+      mongoUrl: process.env.DB_URI,
+      dbName: "spothub",
+    }),
   })
 );
 
