@@ -1,33 +1,47 @@
 const express = require("express");
-const session = require("express-session")
+const bodyParser = require("body-parser");
+const session = require("express-session");
+const cors = require("cors");
+const path = require("path");
 const https = require("https");
 const fs = require("fs");
-const path = require("path");
-const MongoDBConnection = require("./db/connection.js");
+const authRouter = require("./routes/authRouter.js");
+const dataRouter = require("./routes/dataRouter.js");
+
+require("dotenv").config();
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}))
 
 const app = express();
 
-require("dotenv").config();
+app.use(
+  session({
+    secret: "some key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
 
-const apiRouter = require("./routes/apiRouter.js");
+app.use(bodyParser.json());
 
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}))
-
-app.use("/api", apiRouter);
-
-const gracefulShutdown = async () => {
-  console.log("Received shutdown signal, closing MongoDB connection...");
-  await MongoDBConnection.close();
-  process.exit(0);
-};
-
-process.on("SIGINT", gracefulShutdown);
-process.on("SIGTERM", gracefulShutdown);
+app.use("/api/auth", authRouter);
+app.use(
+  "/api/",
+  (req, res, next) => {
+    if (req.session.user) next();
+    else {
+      console.log(req.session.id);
+      res.status(401).send("Login required.");
+    }
+  },
+  dataRouter
+);
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, "/dev/private.key")),
