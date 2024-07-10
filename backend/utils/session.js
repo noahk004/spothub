@@ -1,4 +1,4 @@
-const { randomBytes } = require("node:crypto");
+const { randomBytes, pbkdf2Sync } = require("node:crypto");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
@@ -20,12 +20,17 @@ const sessionMiddleware = session({
 
 const checkCredentials = (req, res, next) => {
   if (req.session.user) {
-		next();
-	}
-  else {
+    next();
+  } else {
     console.log(req.session.id);
     res.status(401).send("Login required.");
   }
 };
 
-module.exports = { sessionMiddleware, checkCredentials };
+const toHash = (password, salt) => {
+  const iterations = 10000;
+  const hash = pbkdf2Sync(password, salt, iterations, 128, "sha512");
+  return hash;
+};
+
+module.exports = { sessionMiddleware, checkCredentials, toHash };

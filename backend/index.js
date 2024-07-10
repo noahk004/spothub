@@ -21,7 +21,6 @@ app.use(corsMiddleware);
 app.use(sessionMiddleware);
 app.use(dbMiddleware);
 
-
 app.use("/api/auth", authRouter);
 app.use("/api/", checkCredentials, dataRouter);
 
