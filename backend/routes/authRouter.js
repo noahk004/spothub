@@ -1,24 +1,25 @@
 const express = require("express");
 const router = express.Router();
 
-const users = [
-  { id: 'helloworld', email: 'noahk004@gmail.com', password: 'wonder123' },
-  { id: 'someid', email: 'nkim9262@gmail.com', password: 'pass123' }
-]
-
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   if (email && password) {
-    const user = users.find(user => user.email === email && user.password === password)
+    const users = req.db.collection("users");
+    const user = await users.findOne({ email: email, password: password });
     if (user) {
-      req.session.user = user;
-      console.log(req.session.id)
-      res.status(200).send(`Successfully logged into ${user.email}`)
+      req.session.user = {
+        isAuthenticated: true,
+        id: user._id.toString()
+      }
+      console.log(`Successfully logged into ${user.email}`);
+      res.status(200).json({
+        user: req.session.user,
+      });
     } else {
-      res.status(401).send("Incorrect email or password.")
+      res.status(401).json({ isAuthenticated: false });
     }
   } else {
-    res.status(401).send("Missing email or password")
+    res.status(401).send("Missing email or password");
   }
 });
 
