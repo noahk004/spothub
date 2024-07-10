@@ -9,12 +9,13 @@ const authRouter = require("./routes/authRouter.js");
 const dataRouter = require("./routes/dataRouter.js");
 
 require("dotenv").config();
+
+const app = express();
+
 app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true
 }))
-
-const app = express();
 
 app.use(
   session({
