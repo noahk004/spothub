@@ -1,10 +1,29 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { login } from "../utils/auth";
+import { isValidEmail } from "../utils/credentials";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function Page() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    try {
+      await login(email, password);
+      router.push("/dashboard");
+    } catch (err) {
+      console.log("Something went wrong while signing in.");
+    }
+  };
 
   return (
     <div className="flex w-full h-screen lg:grid lg:grid-cols-2 lg:min-h-[600px] xl:min-h-[800px]">
@@ -28,7 +47,9 @@ export default function Page() {
               <Input
                 id="email"
                 type="email"
+                maxLength={254}
                 placeholder="user@example.com"
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -42,9 +63,15 @@ export default function Page() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input id="password" type="password" required />
+              <Input
+                id="password"
+                type="password"
+                maxLength={254}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" onClick={handleSubmit}>
               Login
             </Button>
             <Button variant="outline" className="w-full">
