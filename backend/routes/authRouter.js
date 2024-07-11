@@ -81,7 +81,7 @@ router.get("/check", async (req, res) => {
     const data = await sessions.findOne({ "session.user.sid": req.session.id });
     if (data) {
       res.status(200).json({ user: req.session.user });
-      return
+      return;
     }
   }
   res.status(401).json({ isAuthenticated: false });
