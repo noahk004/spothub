@@ -4,45 +4,6 @@ const router = express.Router();
 
 const { toHash } = require("../utils/session.js");
 
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!(email && password)) {
-    res.status(401).send("Missing email or password");
-    return;
-  }
-
-  const users = req.db.collection("users");
-  const user = await users.findOne({ email: email });
-
-  if (!user) {
-    res.status(401).json({ isAuthenticated: false });
-    return;
-  }
-  const hash = toHash(password, user.salt);
-  if (user.password === hash) {
-    req.session.user = {
-      isAuthenticated: true,
-      id: user._id.toString(),
-    };
-    console.log(`Successfully logged into ${user.email}`);
-    res.status(200).json({
-      user: req.session.user,
-    });
-  } else {
-    res.status(401).json({ isAuthenticated: false });
-  }
-});
-
-router.post("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).send("Failed to logout");
-    }
-    res.status(200).send("Successfully logged out.");
-  });
-});
-
 router.post("/register", async (req, res) => {
   const { email, username, password } = req.body;
   if (!(email && username && password)) {
@@ -72,6 +33,52 @@ router.post("/register", async (req, res) => {
     res
       .status(500)
       .send("Something went wrong while inserting data into the database.");
+  }
+});
+
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!(email && password)) {
+    res.status(401).send("Missing email or password");
+    return;
+  }
+
+  const users = req.db.collection("users");
+  const user = await users.findOne({ email: email });
+  if (!user) {
+    res.status(401).json({ isAuthenticated: false });
+    return;
+  }
+  const hash = toHash(password, user.salt);
+  if (user.password === hash) {
+    req.session.user = {
+      isAuthenticated: true,
+      id: user._id.toString(),
+    };
+    console.log(`Successfully logged into ${user.email}`);
+    res.status(200).json({
+      user: req.session.user,
+    });
+  } else {
+    res.status(401).json({ isAuthenticated: false });
+  }
+});
+
+router.post("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send("Failed to logout");
+    }
+    res.status(200).send("Successfully logged out.");
+  });
+});
+
+router.get("/check", (req, res) => {
+  if ("user" in req.session) {
+    res.status(200).json({ user: req.session.user })
+  } else {
+    res.status(401).json({ isAuthenticated: false })
   }
 });
 

@@ -7,6 +7,8 @@ const dbMiddleware = (req, res, next) => {
         version: ServerApiVersion.v1,
         strict: true,
         deprecationErrors: true,
+        ssl: true,
+        tlsAllowInvalidCertificates: true,
       },
     });
     req.db = client.db("spothub");
