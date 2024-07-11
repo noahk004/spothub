@@ -14,6 +14,7 @@ const sessionMiddleware = session({
   },
   store: MongoStore.create({
     mongoUrl: process.env.DB_URI,
+    stringify: false,
     dbName: "spothub",
   }),
 });

@@ -7,7 +7,6 @@ router.get("/data", async (req, res) => {
   const cursor = spotCollection.find({ school: "UC Irvine" });
   const data = await cursor.toArray();
 
-  console.log(req.session.id);
   res.status(201).json({ data });
 });
 

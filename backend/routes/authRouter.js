@@ -54,7 +54,8 @@ router.post("/login", async (req, res) => {
   if (user.password === hash) {
     req.session.user = {
       isAuthenticated: true,
-      id: user._id.toString(),
+      sid: req.session.id,
+      userID: user._id.toString(),
     };
     console.log(`Successfully logged into ${user.email}`);
     res.status(200).json({
@@ -74,12 +75,16 @@ router.post("/logout", (req, res) => {
   });
 });
 
-router.get("/check", (req, res) => {
+router.get("/check", async (req, res) => {
   if ("user" in req.session) {
-    res.status(200).json({ user: req.session.user })
-  } else {
-    res.status(401).json({ isAuthenticated: false })
+    const sessions = req.db.collection("sessions");
+    const data = await sessions.findOne({ "session.user.sid": req.session.id });
+    if (data) {
+      res.status(200).json({ user: req.session.user });
+      return
+    }
   }
+  res.status(401).json({ isAuthenticated: false });
 });
 
 module.exports = router;
