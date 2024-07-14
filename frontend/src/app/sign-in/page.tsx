@@ -63,7 +63,12 @@ export default function Page() {
                 </AlertDescription>
               </div>
               <div>
-                <Cross1Icon className="h-4 w-4 cursor-pointer" onClick={() => {setInvalidCredentialsError(false)}} />
+                <Cross1Icon
+                  className="h-4 w-4 cursor-pointer"
+                  onClick={() => {
+                    setInvalidCredentialsError(false);
+                  }}
+                />
               </div>
             </Alert>
           )}

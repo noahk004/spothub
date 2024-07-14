@@ -31,11 +31,14 @@ export async function register(
   password: string
 ) {
   try {
-    const response = await axios.post("https://localhost:8443/api/auth/register", {
-      email,
-      username,
-      password,
-    });
+    const response = await axios.post(
+      "https://localhost:8443/api/auth/register",
+      {
+        email,
+        username,
+        password,
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error logging in:", error);

@@ -34,5 +34,7 @@ if (process.env.NODE_ENV === "development") {
     console.log(`HTTPS server running on TCP port ${process.env.PORT}.`);
   });
 } else {
-  throw new Error("Node environment has not been configured. Please set NODE_ENV to development or production.")
+  throw new Error(
+    "Node environment has not been configured. Please set NODE_ENV to development or production."
+  );
 }
