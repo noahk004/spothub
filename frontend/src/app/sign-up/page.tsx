@@ -34,6 +34,15 @@ export default function Page() {
               />
             </div>
             <div className="grid gap-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                type="text"
+                placeholder="JDoe"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" />
             </div>

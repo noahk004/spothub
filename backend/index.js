@@ -7,7 +7,6 @@ const dataRouter = require("./routes/dataRouter.js");
 const { sessionMiddleware, checkCredentials } = require("./utils/session.js");
 const { dbMiddleware } = require("./utils/db.js");
 const { corsMiddleware, HTTPSOptions } = require("./utils/config.js");
-const { error } = require("console");
 
 require("dotenv").config();
 

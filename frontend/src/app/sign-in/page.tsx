@@ -10,17 +10,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { ReloadIcon } from "@radix-ui/react-icons";
+
 export default function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
+    setLoading(true);
     try {
       await login(email, password);
+      setLoading(false);
       router.push("/dashboard");
     } catch (err) {
+      setLoading(false);
       console.log("Something went wrong while signing in.");
     }
   };
@@ -71,7 +77,13 @@ export default function Page() {
                 required
               />
             </div>
-            <Button type="submit" className="w-full" onClick={handleSubmit}>
+            <Button
+              type="submit"
+              className="w-full"
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
               Login
             </Button>
             <Button variant="outline" className="w-full">
