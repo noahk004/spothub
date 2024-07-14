@@ -5,17 +5,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { login } from "../utils/auth";
-import { isValidEmail } from "../utils/credentials";
+import { isValidEmail, isValidPassword } from "../utils/credentials";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-import { ReloadIcon } from "@radix-ui/react-icons";
+import {
+  ReloadIcon,
+  ExclamationTriangleIcon,
+  Cross1Icon,
+} from "@radix-ui/react-icons";
 
 export default function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [invalidCredentialsError, setInvalidCredentialsError] = useState(true);
   const router = useRouter();
 
   const handleSubmit = async (event: React.MouseEvent<HTMLElement>) => {
@@ -47,6 +53,20 @@ export default function Page() {
           <div className="grid gap-2 text-center">
             <h1 className="text-3xl font-bold">Sign In</h1>
           </div>
+          {invalidCredentialsError && (
+            <Alert variant="destructive" className="flex p-4 pb-2">
+              <ExclamationTriangleIcon className="h-4 w-4" />
+              <div className="m-0 p-0">
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>
+                  Invalid credentials. Please try again.
+                </AlertDescription>
+              </div>
+              <div>
+                <Cross1Icon className="h-4 w-4 cursor-pointer" onClick={() => {setInvalidCredentialsError(false)}} />
+              </div>
+            </Alert>
+          )}
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>

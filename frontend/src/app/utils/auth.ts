@@ -8,7 +8,7 @@ export async function login(email: string, password: string) {
       email,
       password,
     });
-    return response;
+    return response.data;
   } catch (error) {
     console.error("Error logging in:", error);
     throw error;
@@ -22,5 +22,23 @@ export async function checkAuth() {
   } catch (error) {
     console.error("Error checking authentication:", error);
     return { isAuthenticated: false };
+  }
+}
+
+export async function register(
+  email: string,
+  username: string,
+  password: string
+) {
+  try {
+    const response = await axios.post("https://localhost:8443/api/auth/register", {
+      email,
+      username,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error logging in:", error);
+    throw error;
   }
 }
