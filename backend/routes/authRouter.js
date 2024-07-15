@@ -20,11 +20,19 @@ router.post("/register", async (req, res) => {
   };
   try {
     const users = req.db.collection("users");
-    const existingUser = await users.findOne({ email: email });
-    if (existingUser) {
-      res.status(409).send("Account for this user already exists!");
+
+    const existingEmail = await users.findOne({ email: email });
+    const existingUser = await users.findOne({ username: username });
+    if (existingEmail) {
+      res.status(409).send("Email address is already in use.");
       return;
     }
+    if (existingUser) {
+      res.status(409).send("Username is already in use.");
+      return;
+    }
+    users.createIndex({ email: 1 }, { unique: true });
+    users.createIndex({ username: 1 }, { unique: true });
     const result = await users.insertOne(newUser);
     if (result) {
       res.status(201).send("Account successfully created!");
