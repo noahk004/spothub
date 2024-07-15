@@ -14,7 +14,7 @@ export function checkEmail(email: string): boolean {
 
 export function checkOnlyLettersNumbers(username: string): boolean {
   const pattern = /^[a-zA-Z0-9]+$/;
-  return username && pattern.test(username);
+  return !!username && pattern.test(username);
 }
 
 export function checkLength(password: string): boolean {

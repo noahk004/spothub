@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const https = require("https");
 const authRouter = require("./routes/authRouter.js");
 const dataRouter = require("./routes/dataRouter.js");
@@ -12,7 +13,10 @@ require("dotenv").config();
 
 const app = express();
 
+app.use(cookieParser())
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(corsMiddleware);
 app.use(sessionMiddleware);

@@ -20,8 +20,7 @@ export async function checkAuth() {
     const response = await axios.get("https://localhost:8443/api/auth/check");
     return response.data;
   } catch (error) {
-    console.error("Error checking authentication:", error);
-    return { isAuthenticated: false };
+    console.error("Something went wrong while checking authentication:", error);
   }
 }
 
