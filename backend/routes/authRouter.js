@@ -64,6 +64,8 @@ router.post("/login", async (req, res) => {
       isAuthenticated: true,
       sid: req.session.id,
       userID: user._id.toString(),
+      fName: user.fName,
+      lName: user.lName,
     };
     console.log(`Successfully logged into ${user.email}`);
     res.status(200).json({
