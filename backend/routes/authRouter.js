@@ -5,8 +5,8 @@ const router = express.Router();
 const { toHash } = require("../utils/session.js");
 
 router.post("/register", async (req, res) => {
-  const { email, username, password } = req.body;
-  if (!(email && username && password)) {
+  const { username, fName, lName, email, password } = req.body;
+  if (!(username && fName && lName && email && password)) {
     res.status(400).send("One of the fields is missing.");
     return;
   }
@@ -15,6 +15,8 @@ router.post("/register", async (req, res) => {
   const newUser = {
     email: email,
     username: username,
+    fName: fName,
+    lName: lName,
     password: hash,
     salt: salt,
   };
@@ -38,6 +40,7 @@ router.post("/register", async (req, res) => {
       res.status(201).send("Account successfully created!");
     }
   } catch (err) {
+    console.log(err)
     res
       .status(500)
       .send("Something went wrong while inserting data into the database.");

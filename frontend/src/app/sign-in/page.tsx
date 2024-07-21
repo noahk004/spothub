@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams  } from "next/navigation";
 import { login } from "../utils/auth";
 
 import { Button } from "@/components/ui/button";
@@ -14,16 +14,45 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   ReloadIcon,
   ExclamationTriangleIcon,
+  InfoCircledIcon,
   Cross1Icon,
 } from "@radix-ui/react-icons";
 
+function customAlert(
+  variant: "default" | "destructive" | "success" | null | undefined,
+  header: string,
+  message: string,
+  Icon: React.ForwardRefExoticComponent<any>,
+  onClick: () => void
+): React.ReactNode {
+  return (
+    <Alert variant={variant} className="flex p-4 pb-2 justify-between">
+      <div className="flex gap-2">
+        <Icon className="h-4 w-4" />
+        <div className="m-0 p-0 mb-1">
+          <AlertTitle>{header}</AlertTitle>
+          <AlertDescription>{message}</AlertDescription>
+        </div>
+      </div>
+
+      <div>
+        <Cross1Icon className="h-4 w-4 cursor-pointer" onClick={onClick} />
+      </div>
+    </Alert>
+  );
+}
+
 export default function Page() {
   const router = useRouter();
+  
+  const searchParams = useSearchParams()
+  const popup = searchParams.get('popup')
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [invalidCredentialsError, setInvalidCredentialsError] = useState(false);
+  const [invalidCredentialsError, setInvalidCredentialsError] = useState(true);
+  const [registeredPopupVisible, setRegisteredPopupVisible] = useState(popup === 'registered');
 
   const handleSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -56,26 +85,26 @@ export default function Page() {
           <div className="grid gap-2 text-center">
             <h1 className="text-3xl font-bold">Sign In</h1>
           </div>
-          {invalidCredentialsError && (
-            <Alert variant="destructive" className="flex p-4 pb-2 justify-between">
-              <div className='flex gap-2'>
-                <ExclamationTriangleIcon className="h-4 w-4" />
-                <div className="m-0 p-0">
-                  <AlertTitle>Error</AlertTitle>
-                  <AlertDescription>Invalid credentials. Please try again.</AlertDescription>
-                </div>
-              </div>
-
-              <div>
-                <Cross1Icon
-                  className="h-4 w-4 cursor-pointer"
-                  onClick={() => {
-                    setInvalidCredentialsError(false);
-                  }}
-                />
-              </div>
-            </Alert>
-          )}
+          {invalidCredentialsError &&
+            customAlert(
+              "destructive",
+              "Error",
+              "Invalid credentials. Please try again.",
+              ExclamationTriangleIcon,
+              () => {
+                setInvalidCredentialsError(false);
+              }
+            )}
+          {registeredPopupVisible &&
+            customAlert(
+              "success",
+              "Success",
+              "Account has been created successfully.",
+              InfoCircledIcon,
+              () => {
+                setRegisteredPopupVisible(false);
+              }
+            )}
           <div className="grid gap-4">
             <div className="grid">
               <Label htmlFor="email" className="mb-2">

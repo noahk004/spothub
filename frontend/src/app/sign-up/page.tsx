@@ -30,10 +30,13 @@ import {
   ExclamationTriangleIcon,
   Cross1Icon,
 } from "@radix-ui/react-icons";
+import { queryObjects } from "v8";
 
 export default function Page() {
   const router = useRouter();
 
+  const [fName, setFName] = useState("");
+  const [lName, setLName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -68,9 +71,9 @@ export default function Page() {
       ) {
         throw new CredentialError("Invalid credentials.");
       }
-      await register(email, username, password);
+      await register(username, fName, lName, email, password);
       setLoading(false);
-      router.push("/sign-in");
+      router.push("/sign-in?popup=registered");
     } catch (err) {
       setLoading(false);
       if (!(err instanceof CredentialError)) {
@@ -97,9 +100,7 @@ export default function Page() {
                 <ExclamationTriangleIcon className="h-4 w-4" />
                 <div className="m-0 p-0">
                   <AlertTitle>Error</AlertTitle>
-                  <AlertDescription>
-                    Something went wrong.
-                  </AlertDescription>
+                  <AlertDescription>Something went wrong.</AlertDescription>
                 </div>
               </div>
 
@@ -116,7 +117,51 @@ export default function Page() {
         </CardHeader>
 
         <CardContent className="">
-          <div className="grid gap-4">
+          <div className="grid gap-2">
+            <div className="flex gap-6">
+              <div className="grid">
+                <Label htmlFor="fName" className="mb-2">
+                  First Name
+                </Label>
+                <Input
+                  id="fName"
+                  type="text"
+                  maxLength={30}
+                  className={
+                    (usernameIsValid ? "" : "border-red-500 ") + "mb-2"
+                  }
+                  placeholder="John"
+                  onChange={(e) => setFName(e.target.value)}
+                  required
+                />
+                {!usernameIsValid && (
+                  <div className="text-xs text-red-500">
+                    Username can only contain letters and numbers.
+                  </div>
+                )}
+              </div>
+              <div className="grid">
+                <Label htmlFor="lName" className="mb-2">
+                  Last Name
+                </Label>
+                <Input
+                  id="lName"
+                  type="text"
+                  maxLength={30}
+                  className={
+                    (usernameIsValid ? "" : "border-red-500 ") + "mb-2"
+                  }
+                  placeholder="Doe"
+                  onChange={(e) => setLName(e.target.value)}
+                  required
+                />
+                {!usernameIsValid && (
+                  <div className="text-xs text-red-500">
+                    Username can only contain letters and numbers.
+                  </div>
+                )}
+              </div>
+            </div>
             <div className="grid">
               <Label htmlFor="email" className="mb-2">
                 Email

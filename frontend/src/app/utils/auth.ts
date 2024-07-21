@@ -26,16 +26,20 @@ export async function checkAuth() {
 }
 
 export async function register(
-  email: string,
   username: string,
+  fName: string,
+  lName: string,
+  email: string,
   password: string
 ) {
   try {
     const response = await axios.post(
       "https://localhost:8443/api/auth/register",
       {
-        email,
         username,
+        fName,
+        lName,
+        email,
         password,
       }
     );
