@@ -1,3 +1,7 @@
+"use client";
+
+import withAuth from "../utils/withAuth";
+
 const dummyData = [
   { school: "UC Irvine", building: "ISEB" },
   { school: "UC Irvine", building: "Science Library" },
@@ -6,7 +10,7 @@ const dummyData = [
   { school: "UC Irvine", building: "Langson Library" },
 ];
 
-export default function Page() {
+function Page() {
   return (
     <div>
       {dummyData.map((e, key) => {
@@ -19,3 +23,5 @@ export default function Page() {
     </div>
   );
 }
+
+export default withAuth(Page);

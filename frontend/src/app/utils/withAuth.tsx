@@ -1,39 +1,40 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { checkAuth } from './auth';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { checkAuth } from "./auth";
 
-const withAuth = (WrappedComponent: React.ComponentType<any>, LoadingComponent: React.ComponentType<any>) => {
+function Loading() {
+  return <div>Loading...</div>;
+}
+
+export default function withAuth(
+  WrappedComponent: React.ComponentType<any>,
+  LoadingComponent: React.ComponentType<any> = Loading
+): (props: any) => React.ReactNode {
   return (props: any) => {
     const [loading, setLoading] = useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
     const router = useRouter();
 
+    console.log(user)
+
     useEffect(() => {
       const verifyAuth = async () => {
-        const auth = await checkAuth();
-        if (!auth.isAuthenticated) {
-          router.replace('/sign-in');
-        } else {
-          setIsAuthenticated(true);
+        try {
+          const auth = await checkAuth();
           setUser(auth.user);
+        } catch (err) {
+          router.push("/sign-in");
         }
         setLoading(false);
       };
 
       verifyAuth();
-    }, [router]);
+    });
 
     if (loading) {
-      return LoadingComponent;
-    }
-
-    if (!isAuthenticated) {
-      return null;
+      return <LoadingComponent />;
     }
 
     return <WrappedComponent user={user} {...props} />;
   };
-};
-
-export default withAuth;
+}
