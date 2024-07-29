@@ -15,14 +15,13 @@ export default function withAuth(
 ): (props: any) => React.ReactNode {
   return (props: any) => {
     const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState(null);
     const router = useRouter();
 
     useEffect(() => {
       const verifyAuth = async () => {
         try {
           const auth = await checkAuth();
-          setUser(auth.user);
+          router.push("/app/featured")
         } catch (err) {
           router.push("/sign-in");
         }
@@ -30,12 +29,12 @@ export default function withAuth(
       };
 
       verifyAuth();
-    }, [user]);
+    }, []);
 
     if (loading) {
       return <LoadingComponent />;
     }
 
-    return <WrappedComponent user={user} {...props} />;
+    return <WrappedComponent {...props} />;
   };
 }

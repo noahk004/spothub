@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
+import withAuth from "../utils/withAuth";
+
 import axios from "axios";
 
 import {
@@ -19,7 +21,7 @@ import {
   InfoCircledIcon,
   Cross1Icon,
   EyeClosedIcon,
-  EyeOpenIcon
+  EyeOpenIcon,
 } from "@radix-ui/react-icons";
 
 axios.defaults.withCredentials = true;
@@ -48,7 +50,7 @@ function customAlert(
   );
 }
 
-export default function Page() {
+function Page() {
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -155,9 +157,11 @@ export default function Page() {
                 <button
                   type="button"
                   className="absolute inset-y-0 end-0 flex items-center z-20 px-4 cursor-pointer"
-                  onClick={() => {setShowPassword(!showPassword)}}
+                  onClick={() => {
+                    setShowPassword(!showPassword);
+                  }}
                 >
-                  {showPassword? <EyeOpenIcon /> : <EyeClosedIcon />}
+                  {showPassword ? <EyeOpenIcon /> : <EyeClosedIcon />}
                 </button>
               </div>
             </div>
@@ -192,3 +196,5 @@ export default function Page() {
     </div>
   );
 }
+
+export default withAuth(Page);

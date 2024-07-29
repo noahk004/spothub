@@ -30,9 +30,10 @@ import {
   ExclamationTriangleIcon,
   Cross1Icon,
 } from "@radix-ui/react-icons";
-import { queryObjects } from "v8";
 
-export default function Page() {
+import withAuth from "../utils/withAuth";
+
+function Page() {
   const router = useRouter();
 
   const [fName, setFName] = useState("");
@@ -257,3 +258,5 @@ export default function Page() {
     </div>
   );
 }
+
+export default withAuth(Page);

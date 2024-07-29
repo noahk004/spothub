@@ -1,6 +1,7 @@
 "use client";
 
 import withAuth from "../../utils/withAuth";
+import Nav from "../components/Nav"
 
 const dummyData = [
   { school: "UC Irvine", building: "ISEB" },
@@ -13,6 +14,7 @@ const dummyData = [
 function Page() {
   return (
     <div>
+      <Nav />
       {dummyData.map((e, key) => {
         return (
           <div key={key}>
