@@ -49,3 +49,13 @@ export async function register(
     throw error;
   }
 }
+
+export async function logout() {
+  try {
+    const response = await axios.post("https://localhost:8443/api/auth/logout");
+    return response.data;
+  } catch (error) {
+    console.log("Something went wrong while logging out.");
+    throw error;
+  }
+}
