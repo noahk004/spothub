@@ -1,16 +1,17 @@
-const { randomBytes, pbkdf2Sync } = require("node:crypto");
+const { pbkdf2Sync } = require("node:crypto");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
 require("dotenv").config();
 
 const sessionMiddleware = session({
-  secret: randomBytes(32).toString("hex"),
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
     secure: true,
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: "none",
   },
   store: MongoStore.create({
     mongoUrl: process.env.DB_URI,
@@ -23,7 +24,6 @@ const checkCredentials = (req, res, next) => {
   if (req.session.user) {
     next();
   } else {
-    console.log(req.session.id);
     res.status(401).send("Login required.");
   }
 };

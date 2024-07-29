@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { checkAuth } from "./auth";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 function Loading() {
-  return <div>Loading...</div>;
+  return <div>Redirecting...</div>;
 }
 
 export default function withAuth(
@@ -14,8 +17,6 @@ export default function withAuth(
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
     const router = useRouter();
-
-    console.log(user)
 
     useEffect(() => {
       const verifyAuth = async () => {
@@ -29,7 +30,7 @@ export default function withAuth(
       };
 
       verifyAuth();
-    });
+    }, [user]);
 
     if (loading) {
       return <LoadingComponent />;

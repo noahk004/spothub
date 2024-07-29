@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams  } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { login } from "../utils/auth";
 
 import { Button } from "@/components/ui/button";
@@ -11,12 +11,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
+import { checkAuth } from "../utils/auth";
+import axios from "axios";
+
 import {
   ReloadIcon,
   ExclamationTriangleIcon,
   InfoCircledIcon,
   Cross1Icon,
 } from "@radix-ui/react-icons";
+
+axios.defaults.withCredentials = true;
 
 function customAlert(
   variant: "default" | "destructive" | "success" | null | undefined,
@@ -44,15 +49,17 @@ function customAlert(
 
 export default function Page() {
   const router = useRouter();
-  
-  const searchParams = useSearchParams()
-  const popup = searchParams.get('popup')
+
+  const searchParams = useSearchParams();
+  const popup = searchParams.get("popup");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [invalidCredentialsError, setInvalidCredentialsError] = useState(true);
-  const [registeredPopupVisible, setRegisteredPopupVisible] = useState(popup === 'registered');
+  const [invalidCredentialsError, setInvalidCredentialsError] = useState(false);
+  const [registeredPopupVisible, setRegisteredPopupVisible] = useState(
+    popup === "registered"
+  );
 
   const handleSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();

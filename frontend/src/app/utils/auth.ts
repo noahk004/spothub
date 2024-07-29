@@ -45,7 +45,7 @@ export async function register(
     );
     return response.data;
   } catch (error) {
-    console.log("Error logging in:", error);
+    console.log("Error creating account:", error);
     throw error;
   }
 }

@@ -40,7 +40,7 @@ router.post("/register", async (req, res) => {
       res.status(201).send("Account successfully created!");
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res
       .status(500)
       .send("Something went wrong while inserting data into the database.");
@@ -65,15 +65,13 @@ router.post("/login", async (req, res) => {
   if (user.password === hash) {
     req.session.user = {
       isAuthenticated: true,
-      sid: req.session.id,
       userID: user._id.toString(),
+      email: user.email,
       fName: user.fName,
       lName: user.lName,
     };
     console.log(`Successfully logged into ${user.email}`);
-    res.status(200).json({
-      user: req.session.user,
-    });
+    res.status(200).json(req.session.user);
   } else {
     res.status(401).json({ isAuthenticated: false });
   }
@@ -91,9 +89,9 @@ router.post("/logout", (req, res) => {
 router.get("/check", async (req, res) => {
   if ("user" in req.session) {
     const sessions = req.db.collection("sessions");
-    const data = await sessions.findOne({ "session.user.sid": req.session.id });
+    const data = await sessions.findOne({ _id: req.sessionID });
     if (data) {
-      res.status(200).json({ user: req.session.user });
+      res.status(200).json(req.session.user);
       return;
     }
   }
