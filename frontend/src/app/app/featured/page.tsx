@@ -1,6 +1,6 @@
 "use client";
 
-import withAuth from "../utils/withAuth";
+import withAuth from "../../utils/withAuth";
 
 const dummyData = [
   { school: "UC Irvine", building: "ISEB" },

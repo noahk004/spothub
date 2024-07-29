@@ -18,6 +18,8 @@ import {
   ExclamationTriangleIcon,
   InfoCircledIcon,
   Cross1Icon,
+  EyeClosedIcon,
+  EyeOpenIcon
 } from "@radix-ui/react-icons";
 
 axios.defaults.withCredentials = true;
@@ -52,13 +54,16 @@ export default function Page() {
   const searchParams = useSearchParams();
   const popup = searchParams.get("popup");
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [invalidCredentialsError, setInvalidCredentialsError] = useState(false);
-  const [registeredPopupVisible, setRegisteredPopupVisible] = useState(
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [invalidCredentialsError, setInvalidCredentialsError] =
+    useState<boolean>(false);
+  const [registeredPopupVisible, setRegisteredPopupVisible] = useState<boolean>(
     popup === "registered"
   );
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -67,7 +72,7 @@ export default function Page() {
     try {
       await login(email, password);
       setLoading(false);
-      router.push("/dashboard");
+      router.push("/app/featured");
     } catch (err) {
       setLoading(false);
       setInvalidCredentialsError(true);
@@ -138,18 +143,27 @@ export default function Page() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input
-                id="password"
-                type="password"
-                maxLength={254}
-                className="mb-2"
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  maxLength={254}
+                  className=""
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 end-0 flex items-center z-20 px-4 cursor-pointer"
+                  onClick={() => {setShowPassword(!showPassword)}}
+                >
+                  {showPassword? <EyeOpenIcon /> : <EyeClosedIcon />}
+                </button>
+              </div>
             </div>
             <Button
               type="submit"
-              className="w-full"
+              className="w-full mt-3"
               onClick={handleSubmit}
               disabled={loading}
             >
