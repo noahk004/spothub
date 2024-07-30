@@ -31,9 +31,7 @@ import {
   Cross1Icon,
 } from "@radix-ui/react-icons";
 
-import withAuth from "../utils/withAuth";
-
-function Page() {
+export default function Page() {
   const router = useRouter();
 
   const [fName, setFName] = useState("");
@@ -258,5 +256,3 @@ function Page() {
     </div>
   );
 }
-
-export default withAuth(Page);

@@ -15,10 +15,10 @@ import { useRouter } from "next/navigation";
 import { logout } from "@/app/utils/auth";
 
 type ProfileProps = {
-	handleLogout: () => void
-}
+  handleLogout: () => void;
+};
 
-function ProfilePopup({ handleLogout }: ProfileProps ) {
+function ProfilePopup({ handleLogout }: ProfileProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -28,7 +28,7 @@ function ProfilePopup({ handleLogout }: ProfileProps ) {
           </Link>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] left-[89%] top-[18%]">
+      <DialogContent className="w-[400px] translate-x-[-450px] translate-y-[50px] left-[100%] top-[0%]">
         <DialogHeader>
           <div className="text-lg font-light">Welcome,</div>
           <DialogTitle className="text-4xl">FIRST LAST</DialogTitle>
@@ -38,10 +38,11 @@ function ProfilePopup({ handleLogout }: ProfileProps ) {
         </DialogHeader>
 
         <DialogFooter>
-          <Button
-            onClick={handleLogout}
-          >
+          <Button variant="outline" onClick={handleLogout}>
             Logout
+          </Button>
+          <Button asChild>
+            <Link href="/app/profile">View Profile</Link>
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -52,19 +53,19 @@ function ProfilePopup({ handleLogout }: ProfileProps ) {
 export default function Nav() {
   const router = useRouter();
 
-	const handleLogout = () => {
-		try {
-			logout();
-			router.push("/sign-in");
-		} catch (err) {
-			console.log("Error logging out: " + err)
-		}
-	}
+  const handleLogout = () => {
+    try {
+      logout();
+      router.push("/sign-in");
+    } catch (err) {
+      console.log("Error logging out: " + err);
+    }
+  };
 
   return (
-    <div className="flex justify-between items-center ps-3 pe-4">
+    <div className="flex container justify-between items-center px-2">
       <div className="flex items-center">
-        <Button variant="link" className="ps-3 px-3 my-2" asChild>
+        <Button variant="link" className="pe-3 my-3" asChild>
           <Link href="/app/featured">
             <div className="text-3xl font-bold text-center">
               <span className="drop-shadow-lg bg-gradient-to-r from-orange-500 to-red-800 inline-block text-transparent bg-clip-text">
@@ -87,7 +88,7 @@ export default function Nav() {
           </Link>
         </Button>
 
-        <ProfilePopup handleLogout={handleLogout}/>
+        <ProfilePopup handleLogout={handleLogout} />
       </div>
     </div>
   );
