@@ -1,4 +1,11 @@
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import {
   Dialog,
@@ -9,7 +16,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { GearIcon, PersonIcon } from "@radix-ui/react-icons";
+import {
+  HamburgerMenuIcon,
+  PersonIcon,
+  GearIcon,
+  PlusCircledIcon,
+} from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 
 import { logout } from "@/app/utils/auth";
@@ -28,12 +40,12 @@ function ProfilePopup({ handleLogout }: ProfileProps) {
           </Link>
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[400px] translate-x-[-450px] translate-y-[50px] left-[100%] top-[0%]">
+      <DialogContent className="top-[40px] end-[100px] w-[400px]">
         <DialogHeader>
           <div className="text-lg font-light">Welcome,</div>
-          <DialogTitle className="text-4xl">FIRST LAST</DialogTitle>
+          <DialogTitle className="text-4xl">FIRST</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            You have no new notifications!
           </DialogDescription>
         </DialogHeader>
 
@@ -47,6 +59,32 @@ function ProfilePopup({ handleLogout }: ProfileProps) {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function HamburgerMenuDropdown() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="px-2 justify-self-end" asChild>
+          <Link href="#">
+            <HamburgerMenuIcon className="w-7 h-7" />
+          </Link>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-48">
+        <DropdownMenuGroup>
+          <DropdownMenuItem className="text-md">
+            <PlusCircledIcon className="w-5 h-5 mr-1.5" />
+            Create Spot
+          </DropdownMenuItem>
+          <DropdownMenuItem className="text-md">
+            <GearIcon className="w-5 h-5 mr-1.5" />
+            Settings
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
@@ -82,13 +120,11 @@ export default function Nav() {
         </Button>
       </div>
       <div className="flex items-center">
-        <Button variant="ghost" className="px-2 justify-self-end" asChild>
-          <Link href="#">
-            <GearIcon className="w-7 h-7" />
-          </Link>
-        </Button>
+        <HamburgerMenuDropdown />
 
-        <ProfilePopup handleLogout={handleLogout} />
+        <div className="relative">
+          <ProfilePopup handleLogout={handleLogout} />
+        </div>
       </div>
     </div>
   );

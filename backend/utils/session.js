@@ -10,7 +10,7 @@ const sessionMiddleware = session({
   saveUninitialized: false,
   cookie: {
     secure: true,
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    maxAge: 90 * 24 * 60 * 60 * 1000, // 90 days
     sameSite: "none",
   },
   store: MongoStore.create({

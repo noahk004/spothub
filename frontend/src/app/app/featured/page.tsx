@@ -1,13 +1,15 @@
 "use client";
 
 import Image from "next/image";
+import { Input } from "@/components/ui/input";
+
 import withAuth from "../../utils/withAuth";
 import Nav from "../components/Nav";
 
 import SampleImg from "./img.jpeg";
 import Top3Icon from "../top3.svg";
 
-import { StarFilledIcon } from "@radix-ui/react-icons";
+import { StarFilledIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 type DataEntry = {
   title: string;
@@ -96,13 +98,19 @@ function Page() {
     <div>
       <Nav />
       <div className="container px-[50px]">
-        <div className="text-3xl font-bold mb-7 mt-7 text-slate-800">
-          Search
+        <div className="relative mt-[25px] mb-[50px] mx-[50px]">
+          <Input
+            type="text"
+            placeholder="Search for places, categories, or locations"
+            className="text-xl p-7 rounded-3xl drop-shadow-lg bg-white"
+          />
+          <MagnifyingGlassIcon className="absolute inset-y-0 end-0 w-7 h-7 text-slate-400 translate-x-[-60%] translate-y-[50%]" />
         </div>
-        <div className="text-3xl font-bold mb-7 mt-7 text-slate-800">
+
+        <div className="text-3xl font-bold mb-7 text-slate-700">
           Featured Spots
         </div>
-        <div className="flex flex-wrap gap-9">
+        <div className="flex flex-wrap gap-9 mb-9">
           {dummyData.map((e, key) => {
             return (
               <button>
