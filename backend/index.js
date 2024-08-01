@@ -23,7 +23,7 @@ app.use(sessionMiddleware);
 app.use(dbMiddleware);
 
 app.use("/api/auth", authRouter);
-app.use("/api/", checkCredentials, dataRouter);
+app.use("/api/data", checkCredentials, dataRouter);
 
 if (process.env.NODE_ENV === "development") {
   app.listen(process.env.PORT, () => {

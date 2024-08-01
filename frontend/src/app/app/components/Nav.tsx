@@ -76,7 +76,7 @@ function HamburgerMenuDropdown() {
         <DropdownMenuGroup>
           <DropdownMenuItem className="text-md">
             <PlusCircledIcon className="w-5 h-5 mr-1.5" />
-            Create Spot
+            <Link href="/app/create">Create Spot</Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="text-md">
             <GearIcon className="w-5 h-5 mr-1.5" />
@@ -104,7 +104,7 @@ export default function Nav() {
     <div className="flex container justify-between items-center px-2">
       <div className="flex items-center">
         <Button variant="link" className="pe-3 my-3" asChild>
-          <Link href="/app/featured">
+          <Link href="/app/explore">
             <div className="text-3xl font-bold text-center">
               <span className="drop-shadow-lg bg-gradient-to-r from-orange-500 to-red-800 inline-block text-transparent bg-clip-text">
                 SpotHub

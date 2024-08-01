@@ -185,7 +185,7 @@ function Page() {
       </div>
       <div className="hidden lg:block bg-muted contrast-125 brightness-50">
         <Image
-          src="/backgroundimage.jpg"
+          src="/anteater-sitting-on-bench.jpg"
           alt="Image"
           width="2000"
           height="2000"
