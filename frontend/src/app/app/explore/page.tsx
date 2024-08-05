@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 
-import withAuth from "../../utils/withAuth";
 import Nav from "../components/Nav";
 
 import SampleImg from "./img.jpeg";

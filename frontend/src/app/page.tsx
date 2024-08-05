@@ -12,13 +12,12 @@ export default function Home() {
               SpotHub
             </span>
           </h1>
-          <div className="text-xl text-center mb-4">
-            Find out what people have to say about UC Irvine's most popular
-            study spots!
+          <div className="text-2xl font-light text-center mb-4">
+            Find and share new favorite study spots near your school!
           </div>
-          <div className="flex justify-center ">
-            <Button size="lg" asChild>
-              <Link href="/sign-in">Get Started</Link>
+          <div className="flex justify-center">
+            <Button size="lg" className="text-lg rounded-xl py-6" asChild>
+              <Link href="/app/explore">Let's Go!</Link>
             </Button>
           </div>
         </div>
